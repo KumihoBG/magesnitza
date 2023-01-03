@@ -47,10 +47,10 @@ export default function Navigation() {
         }}
         centered
       >
-        <StyledTab label="Home" />
-        <StyledTab label="Edit" />
-        <StyledTab label="Contact" />
-        <StyledTab label="Login" />
+        <StyledTab label="Home"/>
+        <StyledTab label="Edit"/>
+        <StyledTab label="Contact"/>
+        <StyledTab label="Login"/>
       </Tabs>
     </Box>
   );

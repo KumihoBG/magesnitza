@@ -1,6 +1,6 @@
-import Form from "../components/Form/Form";
+import Form from "../Form/Form";
 import Image from "next/image";
-import { Container } from "./styled";
+import { Container } from "../../styles/editStyles";
 
 const Edit = () => {
   return (

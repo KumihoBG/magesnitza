@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import CreateIcon from '@mui/icons-material/Create';
 import { FormContainer, Input, Heading, StyledButton, InputContainer } from './styled';
+import { createChapter } from '../../pages/api/data';
 
-const Form = () => (
+const Form = () => {
+  const [title, setTitle] = useState();
+  const [chapterContent, setChapterContent] = useState();
+
+  const handleChangeTitle = (e) => {
+    setTitle(e.target.value,);
+  };
+
+  const handleChangeContent = (e) => {
+    setChapterContent(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const newChapter = {
+      title,
+      chapterContent,
+    }
+
+    const chapter = await createChapter(newChapter);
+    return chapter;
+  };
+    
+  return (
   <div>
     <Heading>Add new chapter to "Magesnitza"</Heading>
     <FormContainer>
@@ -11,15 +36,16 @@ const Form = () => (
         <CreateIcon sx={{ marginBottom: '20px', color: '#00bcd5'}}/>
         <Input
           type="text"
-          id="name"
-          name="name"
+          id="title"
+          name="title"
           required
           placeholder="Chapter name"
+          onChange={(e) => handleChangeTitle(e)}
         />
       </InputContainer>
       <TextareaAutosize
-        id="message"
-        name="message"
+        id="chapterContent"
+        name="chapterContent"
         minRows={50}
         placeholder="Once upon a time..."
         style={{
@@ -37,10 +63,12 @@ const Form = () => (
           marginLeft: 50,
           resize: "none",
         }}
+        onChange={(e) => handleChangeContent(e)}
       />
-      <StyledButton type="submit">Send</StyledButton>
+      <StyledButton type="submit" onClick={handleSubmit}>Send</StyledButton>
     </FormContainer>
   </div>
-);
+  );
+}
 
 export default Form;
