@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
@@ -49,6 +49,7 @@ export default function Navigation() {
       >
         <StyledTab label="Home"/>
         <StyledTab label="Edit"/>
+        <StyledTab label="About"/>
         <StyledTab label="Contact"/>
         <StyledTab label="Login"/>
       </Tabs>

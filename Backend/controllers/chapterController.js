@@ -9,8 +9,6 @@ const {
 } = require("../services/chapterService");
 const { updateBook } = require("../services/bookService");
 
-const { verifyAccessToken } = require("../middleware/auth");
-
 router.get("/", async (req, res) => {
   try {
     const Chapters = await getAll();
@@ -81,7 +79,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.put("/update/:id", verifyAccessToken, async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   if (req.body) {
     try {
       const updatedChapter = await updateChapter(

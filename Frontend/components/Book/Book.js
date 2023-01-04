@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { getData, getChapterById } from "../../pages/api/data";
 import { BookTitle, Label, Select, Content, Summary, Text } from "./styled";
 
 const Book = () => {
-  const [chapter, setChapter] = React.useState({});
-  const [chapters, setChapters] = React.useState([]);
-  const [book, setBook] = React.useState({});
-  const [chapterContent, setChapterContent] = React.useState([]);
+  const [book, setBook] = useState({});
+  const [chapter, setChapter] = useState({});
+  const [chapterContent, setChapterContent] = useState([]);
   const chapterList = [];
+  let sortedChapterList = [];
 
   const getBook = async () => {
     const book = await getData();
-    setChapters(book.chapters);
     setBook(book);
+    const chapters = book?.chapters;
+
+    for (let chapter of chapters) {
+      const currentChapter = await getChapterById(chapter);
+      chapterList.push(currentChapter);
+    }
+
+    sortedChapterList = chapterList.sort(
+      (a, b) => a.chapterNumber - b.chapterNumber
+      );
+
+      setChapterContent(sortedChapterList);
+      return {
+        book,
+        sortedChapterList
+      }
   };
 
   const getChapter = async (id) => {
@@ -23,17 +38,8 @@ const Book = () => {
     return chapter;
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getBook();
-
-    chapters?.map(async (chapter) => {
-      const currentChapter = await getChapter(chapter);
-      chapterList.push(currentChapter);
-      const sortedChapterList = chapterList.sort(
-        (a, b) => a.chapterNumber - b.chapterNumber
-      );
-      setChapterContent(sortedChapterList);
-    });
   }, []);
 
   const handleChange = async (e) => {
@@ -41,9 +47,7 @@ const Book = () => {
     const chapter = await getChapter(chapterId);
     return chapter;
   };
-  console.log('chapterContent: ', chapterContent);
-  console.log('chapter: ', chapter);
-  console.log('chapters: ', chapters);
+
   return (
     <>
       <BookTitle>{book.title}</BookTitle>
@@ -78,8 +82,8 @@ const Book = () => {
             fontSize: "18px",
           }}
         >
-          <h1>{chapter.chapterTitle}</h1>
-          <Content>{chapter.chapterContent}</Content>
+          <h1>{chapter.chapterTitle || chapterContent[0]?.chapterTitle}</h1>
+          <Content>{chapter.chapterContent || chapterContent[0]?.chapterContent}</Content>
         </Box>
         <Box sx={{ marginLeft: "2%", width: "400px" }}>
           <Label htmlFor="dropDownMenu">

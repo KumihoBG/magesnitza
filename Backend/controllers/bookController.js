@@ -1,16 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {
-  BookStatusDelivered,
-} = require("../middleware/emailBookSender");
 
 const {
   getById,
   createBook,
   updateBook,
 } = require("../services/bookService");
-
-const { verifyAccessToken } = require("../middleware/auth");
 
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
@@ -77,9 +72,6 @@ router.put("/update/:id", async (req, res) => {
           message: "Book not updated",
         });
       } else {
-        if (req.body.BookStatus === "delivered") {
-          BookStatusDelivered(updatedBook);
-        }
         res.status(200).json(updatedBook);
       }
     } catch (err) {

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import CreateIcon from '@mui/icons-material/Create';
 import { FormContainer, Input, Heading, StyledButton, InputContainer } from './styled';
 import { createChapter } from '../../pages/api/data';
 
 const Form = () => {
+  const router = useRouter();
   const [title, setTitle] = useState();
   const [chapterContent, setChapterContent] = useState();
 
@@ -25,6 +27,7 @@ const Form = () => {
     }
 
     const chapter = await createChapter(newChapter);
+    router.push('/');
     return chapter;
   };
     

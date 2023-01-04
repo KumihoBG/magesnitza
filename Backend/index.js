@@ -8,18 +8,14 @@ require("dotenv").config({ path: "variables.env" });
 
 const bookController = require("./controllers/bookController");
 const chapterController = require("./controllers/chapterController");
-const authController = require("./controllers/authController");
-const userController = require("./controllers/userController");
-const tokenRoute = require("./middleware/token");
 
 const {
   PORT,
   DB_CONNECTION,
   SITE_ROUTE_DEV,
   SITE_ROUTE_PROD,
-  SITE_ROUTE_ADMIN,
 } = process.env;
-const originSites = [SITE_ROUTE_DEV, SITE_ROUTE_PROD, SITE_ROUTE_ADMIN];
+const originSites = [SITE_ROUTE_DEV, SITE_ROUTE_PROD];
 process.once("SIGUSR2", () =>
   server.close((err) => process.kill(process.pid, "SIGUSR2"))
 );
@@ -44,13 +40,8 @@ app.use(
 
 app.use(express.static("public"));
 
-// get route for the tokens - access and refresh
-app.use("/api", tokenRoute);
-
 app.use("/api/book", bookController);
 app.use("/api/chapter", chapterController);
-app.use("/api/auth", authController);
-app.use("/api/user", userController);
 
 app.all("*", function (error, req, res, next) {
   res.status(404).json({
